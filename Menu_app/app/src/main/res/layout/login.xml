@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/Email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email "
+                    android:textStyle="bold"
+                    android:textSize="18dp"/>
+                <EditText
+                    android:id="@+id/loginEmail"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Email"
+                    android:textSize="18dp"
+                    android:maxLines="1"
+                    android:inputType="textEmailAddress"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/PW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PW     "
+                    android:textStyle="bold"
+                    android:textSize="18dp"/>
+                <EditText
+                    android:id="@+id/loginPW"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter PW"
+                    android:textSize="18dp"
+                    android:inputType="textPassword"
+                    android:maxLines="1"/>
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="LOGIN"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp"
+            android:padding="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10sp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="아직 계정이 없으신가요?"
+            android:textColor="#ff000000"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  지금 가입하기"
+            android:id="@+id/Sign"
+            android:clickable="true"
+            android:textColor="#ddff0000"/>
+"
+        <!--<Button
+            android:id="@+id/Sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:textAllCaps="false"
+            android:layout_marginRight="5sp"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:padding="20dp"/>-->
+    </LinearLayout>
+
+
+</LinearLayout>
