@@ -7,6 +7,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="setting"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menulist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

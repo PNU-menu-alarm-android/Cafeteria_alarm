@@ -52,7 +52,7 @@ public class deleteMenu extends AppCompatActivity {
                     name = findViewById(R.id.name);
                     menu_name = name.getText().toString().trim();
                     try {
-                        firebaseReference.child("user").child(username).child("menu").child(menu_name).removeValue();
+                        firebaseReference.child("user").child(username).child("Food").child(menu_name).removeValue();
                     } catch (Exception e) {
                         Toast.makeText(deleteMenu.this, "해당 메뉴가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                         name.setText("");
@@ -61,6 +61,7 @@ public class deleteMenu extends AppCompatActivity {
                     Toast.makeText(deleteMenu.this, menu_name + " 제거 완료", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                ((Setting)Setting.CONTEXT).onResume();
                 finish();
             }
         });

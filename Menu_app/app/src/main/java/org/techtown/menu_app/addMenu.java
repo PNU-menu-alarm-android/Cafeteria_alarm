@@ -1,5 +1,6 @@
 package org.techtown.menu_app;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 
 public class addMenu extends AppCompatActivity {
 
@@ -52,11 +54,12 @@ public class addMenu extends AppCompatActivity {
                     name = findViewById(R.id.name);
                     menu_name = name.getText().toString().trim();
                     try {
+                        Food update_food = new Food(menu_name);
                         Map<String, Object> menu_updates = new Hashtable<>();
                         name = findViewById(R.id.name);
                         menu_name = name.getText().toString().trim();
-                        menu_updates.put(menu_name, menu_name);
-                        firebaseReference.child("user").child(username).child("menu").updateChildren(menu_updates);
+                        menu_updates.put(menu_name, update_food);
+                        firebaseReference.child("user").child(username).child("Food").updateChildren(menu_updates);
                     } catch (Exception e) {
                         Toast.makeText(addMenu.this, "메뉴를 추가하는 도중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
                         name.setText("");
@@ -65,6 +68,7 @@ public class addMenu extends AppCompatActivity {
                     Toast.makeText(addMenu.this, menu_name+" 추가 완료", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                ((Setting)Setting.CONTEXT).onResume();
                 finish();
             }
         });
