@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class addMenu extends AppCompatActivity {
+public class deleteMenu extends AppCompatActivity {
 
-    Button add;
+    Button delete;
     EditText name;
     String menu_name, email, username;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -36,33 +36,29 @@ public class addMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addmenu);
+        setContentView(R.layout.deletemenu);
 
         Intent intent = getIntent();
         email = intent.getStringExtra("email").trim();
         username = intent.getStringExtra("username").trim();
 
-        add = findViewById(R.id.add);
+        delete = findViewById(R.id.delete);
         name = findViewById(R.id.name);
 
-        add.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 while(true){
                     name = findViewById(R.id.name);
                     menu_name = name.getText().toString().trim();
                     try {
-                        Map<String, Object> menu_updates = new Hashtable<>();
-                        name = findViewById(R.id.name);
-                        menu_name = name.getText().toString().trim();
-                        menu_updates.put(menu_name, menu_name);
-                        firebaseReference.child("user").child(username).child("menu").updateChildren(menu_updates);
+                        firebaseReference.child("user").child(username).child("menu").child(menu_name).removeValue();
                     } catch (Exception e) {
-                        Toast.makeText(addMenu.this, "메뉴를 추가하는 도중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(deleteMenu.this, "해당 메뉴가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                         name.setText("");
                         continue;
                     }
-                    Toast.makeText(addMenu.this, menu_name+" 추가 완료", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(deleteMenu.this, menu_name + " 제거 완료", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 finish();

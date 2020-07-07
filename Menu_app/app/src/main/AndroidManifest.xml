@@ -23,6 +23,7 @@
         <activity android:name=".Menu" />
         <activity android:name=".Setting"/>
         <activity android:name=".addMenu"/>
+        <activity android:name=".deleteMenu"/>
     </application>
 
 </manifest>
