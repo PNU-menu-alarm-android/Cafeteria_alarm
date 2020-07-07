@@ -30,7 +30,7 @@ public class Sign_up extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference firebaseReference = firebaseDatabase.getReference();
-    String gender, email, pwd, name;
+    String email, pwd, name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,30 +47,18 @@ public class Sign_up extends AppCompatActivity {
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                name = et_name.getText().toString().trim();
                 email = et_email.getText().toString().trim();
                 pwd = et_pwd.getText().toString().trim();
-                name = et_name.getText().toString().trim();
 
-                RadioGroup genderGroup = findViewById(R.id.genderGroup);
-                int genderGroupID = genderGroup.getCheckedRadioButtonId();
-                gender = ((RadioButton)findViewById(genderGroupID)).getText().toString();
-                genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                        RadioButton genderButton = findViewById(i);
-                        gender = genderButton.getText().toString();
-                    }
-                });
 
                 firebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(Sign_up.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            User user = new User(name, email, pwd, gender);
+                            User user = new User(name, email, pwd);
                             firebaseReference.child("user").child(name).setValue(user);
                             Toast.makeText(Sign_up.this, "회원 가입 완료", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Sign_up.this, MainActivity.class);
-                            startActivity(intent);
                             finish();
                         }
                         else {

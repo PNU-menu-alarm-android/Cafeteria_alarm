@@ -52,15 +52,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        email_login = findViewById(R.id.loginEmail);
-        pwd_login = findViewById(R.id.loginPW);
-        login = findViewById(R.id.login);
-
         firebaseAuth = firebaseAuth.getInstance();
+        login = findViewById(R.id.login);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                email_login = findViewById(R.id.loginEmail);
+                pwd_login = findViewById(R.id.loginPW);
+
                 email = email_login.getText().toString().trim();
                 pwd = pwd_login.getText().toString().trim();
 
@@ -78,18 +78,19 @@ public class MainActivity extends AppCompatActivity {
                                         if (user.getEmail().equals(email)){
                                             name = user.getName();
                                             find = true;
+                                            Intent intent = new Intent(MainActivity.this, Home.class);
+                                            intent.putExtra("name", name);
+                                            intent.putExtra("email", email);
+                                            startActivity(intent);
                                             break;
                                         }
                                     }
-                                    if (find == false){
+                                    if (find == false) {
                                         Toast.makeText(MainActivity.this, "Email 혹은 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
                                         email_login.setText("");
                                         pwd_login.setText("");
                                         return;
                                     }
-                                    Intent intent = new Intent(MainActivity.this, Home.class);
-                                    intent.putExtra("name", name);
-                                    startActivity(intent);
                                 }
 
                                 @Override

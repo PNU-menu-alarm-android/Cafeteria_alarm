@@ -20,6 +20,9 @@
         </activity>
         <activity android:name=".Sign_up" />
         <activity android:name=".Home" />
+        <activity android:name=".Menu" />
+        <activity android:name=".Setting"/>
+        <activity android:name=".addMenu"/>
     </application>
 
 </manifest>
