@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:hint="name"
         android:id="@+id/name"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:privateImeOptions="defaultInputmode=korean" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

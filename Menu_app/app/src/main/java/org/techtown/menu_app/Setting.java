@@ -146,7 +146,7 @@ public class Setting extends AppCompatActivity {
                                             public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name == menu){
+                                                    if(menu_name.equals(menu)){
                                                         String alarm_cont = "월요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
@@ -163,6 +163,137 @@ public class Setting extends AppCompatActivity {
                                         });
                                     }
                                 }
+
+                                for (final String place : places) {
+                                    for (final String time : times) {
+                                        reference = database.getReference("화/" + place + "/" + time);
+                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
+                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                    String menu = (String) in_snapshot.getValue();
+                                                    if(menu_name.equals(menu)){
+                                                        String alarm_cont = "화요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        Alarm update_alarm = new Alarm(alarm_cont);
+                                                        Map<String, Object> alarm_updates = new Hashtable<>();
+                                                        alarm_updates.put(menu_name, update_alarm);
+                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.e("sync", "alarm addition error");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                for (final String place : places) {
+                                    for (final String time : times) {
+                                        reference = database.getReference("수/" + place + "/" + time);
+                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
+                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                    String menu = (String) in_snapshot.getValue();
+                                                    if(menu_name.equals(menu)){
+                                                        String alarm_cont = "수요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        Alarm update_alarm = new Alarm(alarm_cont);
+                                                        Map<String, Object> alarm_updates = new Hashtable<>();
+                                                        alarm_updates.put(menu_name, update_alarm);
+                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.e("sync", "alarm addition error");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                for (final String place : places) {
+                                    for (final String time : times) {
+                                        reference = database.getReference("목/" + place + "/" + time);
+                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
+                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                    String menu = (String) in_snapshot.getValue();
+                                                    if(menu_name.equals(menu)){
+                                                        String alarm_cont = "목요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        Alarm update_alarm = new Alarm(alarm_cont);
+                                                        Map<String, Object> alarm_updates = new Hashtable<>();
+                                                        alarm_updates.put(menu_name, update_alarm);
+                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.e("sync", "alarm addition error");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                for (final String place : places) {
+                                    for (final String time : times) {
+                                        reference = database.getReference("금/" + place + "/" + time);
+                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
+                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                    String menu = (String) in_snapshot.getValue();
+                                                    if(menu_name.equals(menu)){
+                                                        String alarm_cont = "금요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        Alarm update_alarm = new Alarm(alarm_cont);
+                                                        Map<String, Object> alarm_updates = new Hashtable<>();
+                                                        alarm_updates.put(menu_name, update_alarm);
+                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.e("sync", "alarm addition error");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                for (final String place : places) {
+                                    for (final String time : times) {
+                                        reference = database.getReference("토/" + place + "/" + time);
+                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
+                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                    String menu = (String) in_snapshot.getValue();
+                                                    if(menu_name.equals(menu)){
+                                                        String alarm_cont = "토요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        Alarm update_alarm = new Alarm(alarm_cont);
+                                                        Map<String, Object> alarm_updates = new Hashtable<>();
+                                                        alarm_updates.put(menu_name, update_alarm);
+                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.e("sync", "alarm addition error");
+                                            }
+                                        });
+                                    }
+                                }
+
                             } catch(Exception e) {
                                 Log.e("sync", "Syncronizing error");
                                 continue;

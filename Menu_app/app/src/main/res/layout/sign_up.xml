@@ -44,7 +44,8 @@
                 android:layout_gravity="center"
                 android:padding="10dp"
                 android:id="@+id/nameText"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:privateImeOptions="defaultInputmode=korean" />
             <EditText
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
