@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (user.getEmail().equals(email)){
                                             name = user.getName();
                                             find = true;
-                                            Intent intent = new Intent(MainActivity.this, Home.class);
+                                            Intent intent = new Intent(MainActivity.this, home.class);
                                             intent.putExtra("name", name);
                                             intent.putExtra("email", email);
                                             startActivity(intent);

@@ -4,11 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.LogPrinter;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -93,6 +90,7 @@ public class Setting extends AppCompatActivity {
         Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((home)home.HCONTEXT).onResume();
                 finish();
             }
         });
@@ -123,7 +121,7 @@ public class Setting extends AppCompatActivity {
             public void onClick(View v) {
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 userReference = firebaseDatabase.getReference("user");
-                userReference.child(username).child("alarm").setValue("");
+                userReference.child(username).child("alarm").setValue(null);
                 firebaseReference = firebaseDatabase.getReference("user/"+username+"/Food");
                 firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -147,11 +145,11 @@ public class Setting extends AppCompatActivity {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if(menu_name.equals(menu)){
-                                                        String alarm_cont = "월요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        String alarm_cont = "월요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
                                                         alarm_updates.put(menu_name, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates); //여기수정할것
                                                     }
                                                 }
                                             }
@@ -173,7 +171,7 @@ public class Setting extends AppCompatActivity {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if(menu_name.equals(menu)){
-                                                        String alarm_cont = "화요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        String alarm_cont = "화요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
                                                         alarm_updates.put(menu_name, update_alarm);
@@ -199,7 +197,7 @@ public class Setting extends AppCompatActivity {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if(menu_name.equals(menu)){
-                                                        String alarm_cont = "수요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        String alarm_cont = "수요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
                                                         alarm_updates.put(menu_name, update_alarm);
@@ -225,7 +223,7 @@ public class Setting extends AppCompatActivity {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if(menu_name.equals(menu)){
-                                                        String alarm_cont = "목요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        String alarm_cont = "목요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
                                                         alarm_updates.put(menu_name, update_alarm);
@@ -251,7 +249,7 @@ public class Setting extends AppCompatActivity {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if(menu_name.equals(menu)){
-                                                        String alarm_cont = "금요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        String alarm_cont = "금요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
                                                         alarm_updates.put(menu_name, update_alarm);
@@ -277,7 +275,7 @@ public class Setting extends AppCompatActivity {
                                                 for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if(menu_name.equals(menu)){
-                                                        String alarm_cont = "토요일 '" + place + "'에서 '" + time + "'으로 " + menu + "'가 나옵니다.";
+                                                        String alarm_cont = "토요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
                                                         alarm_updates.put(menu_name, update_alarm);
@@ -296,6 +294,7 @@ public class Setting extends AppCompatActivity {
 
                             } catch(Exception e) {
                                 Log.e("sync", "Syncronizing error");
+                                Toast.makeText(Setting.this, "동기화 에러 발견", Toast.LENGTH_SHORT).show();
                                 continue;
                             }
                         }
@@ -307,6 +306,8 @@ public class Setting extends AppCompatActivity {
                         Log.e("Setting", String.valueOf(databaseError.toException()));
                     }
                 });
+                Toast.makeText(Setting.this, "알람 동기화를 완료하였습니다.", Toast.LENGTH_SHORT).show();
+                ((home)home.HCONTEXT).onResume();
             }
         });
     }

@@ -23,12 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Home extends AppCompatActivity {
+public class home extends AppCompatActivity {
+
+    public static Context HCONTEXT;
 
     ImageButton Setting, Menu;
     String username, email;
-
-    public static Context CONTEXT;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -52,7 +52,7 @@ public class Home extends AppCompatActivity {
         Setting = findViewById(R.id.settingbutton);
         Menu = findViewById(R.id.allmenubutton);
 
-        CONTEXT = this;
+        HCONTEXT = this;
 
         recyclerView = findViewById(R.id.alarmlist);
         recyclerView.setHasFixedSize(true);
@@ -91,7 +91,7 @@ public class Home extends AppCompatActivity {
         Setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Home.this, Setting.class);
+                Intent intent = new Intent(home.this, Setting.class);
                 intent.putExtra("username", username);
                 intent.putExtra("email", email);
                 startActivity(intent);
@@ -101,11 +101,45 @@ public class Home extends AppCompatActivity {
         Menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Home.this, Menu.class);
+                Intent intent = new Intent(home.this, Menu.class);
                 intent.putExtra("username", username);
                 intent.putExtra("email", email);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseReference = firebaseDatabase.getReference("user/"+username+"/alarm");
+        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
+                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
+                    try {
+                        Alarm alarm = snapshot.getValue(Alarm.class);
+                        arrayList.add(alarm);
+                    } catch(Exception e) {
+                        continue;
+                    }
+                }
+                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 디비를 가져오던 중 에러 발생 시
+                Log.e("Setting", String.valueOf(databaseError.toException()));
+            }
+        });
+
+        adapter = new AlarmAdapter(arrayList, this);
+        recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
     }
 }
