@@ -30,13 +30,16 @@ def crawling():
                 newMenuDict = OrderedDict()
                 for k in range(2,5):#조식 중식 석식
                     menuList = soup.select('#cont > div.menu-wr > div.is-wauto-box.menu-tbl-wr > table > tbody > tr:nth-child('+str(j)+') > td:nth-child('+str(k)+') > ul > li > p')
+                    menuLists=[]
+                    menuLists.extend(menuList)
                     newMenuList = []
                     for menu in menuList:
                         menu = menu.get_text()
                         menu = re.split(' |,|\n',menu)
-                        newMenuList.append(menu)
+                        newMenuList.extend(menu)
+
                     if len(newMenuList) == 0:#메뉴가 비어있는 칸
-                        newMenuList.append('x')
+                        newMenuList.extend('x')
 
                     if k == 2:
                         newMenuDict['조식'] = newMenuList
@@ -45,6 +48,5 @@ def crawling():
                     else:
                         newMenuDict['석식'] = newMenuList
                 cafeteria[where] = newMenuDict
-
             json.dump(cafeteria,file,ensure_ascii=False,indent='\t')
     return filenameList
