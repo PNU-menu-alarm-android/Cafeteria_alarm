@@ -25,7 +25,7 @@ public class home extends AppCompatActivity {
 
     public static Context HCONTEXT;
 
-    ImageButton Setting, SelectMenu;
+    ImageButton Setting, menu;
     String username, email;
 
     private RecyclerView foodRecyclerView, alarmRecyclerView;
@@ -50,7 +50,7 @@ public class home extends AppCompatActivity {
         infoName.setText(username);
 
         Setting = findViewById(R.id.settingbutton);
-        SelectMenu = findViewById(R.id.allmenubutton);
+        menu = findViewById(R.id.allmenubutton);
         HCONTEXT = this;
 
         foodRecyclerView = findViewById(R.id.menulist);
@@ -131,10 +131,10 @@ public class home extends AppCompatActivity {
             }
         });
 
-        SelectMenu.setOnClickListener(new View.OnClickListener() {
+        menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(home.this, MenuSelect.class);
+                Intent intent = new Intent(home.this, Menu.class);
                 startActivity(intent);
             }
         });
