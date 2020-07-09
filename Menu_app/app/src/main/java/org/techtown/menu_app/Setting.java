@@ -29,13 +29,9 @@ public class Setting extends AppCompatActivity {
 
     public static Context CONTEXT;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Food> foodArrayList;
     private FirebaseDatabase firebaseDatabase, database;
     private DatabaseReference firebaseReference, reference, userReference;
-    Button Home, add, delete, sync;
+    Button Home, Setting_account, Setting_menu, sync;
     String username, email, menu_name;
 
     List<String> menus = new ArrayList<String>();
@@ -52,8 +48,8 @@ public class Setting extends AppCompatActivity {
         email = intent.getStringExtra("email").trim();
 
         Home = findViewById(R.id.homebutton);
-        add = findViewById(R.id.addmenu);
-        delete = findViewById(R.id.deletemenu);
+        Setting_account = findViewById(R.id.Setting_account);
+        Setting_menu = findViewById(R.id.Setting_menu);
         sync = findViewById(R.id.synchronization);
 
         Home.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +60,8 @@ public class Setting extends AppCompatActivity {
             }
         });
 
-
-        add.setOnClickListener(new View.OnClickListener() {
+/*
+        Setting_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Setting.this, addMenu.class);
@@ -75,10 +71,12 @@ public class Setting extends AppCompatActivity {
             }
         });
 
-        delete.setOnClickListener(new View.OnClickListener() {
+ */
+
+        Setting_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Setting.this, deleteMenu.class);
+                Intent intent = new Intent(Setting.this, Setting_menu.class);
                 intent.putExtra("username", username);
                 intent.putExtra("email", email);
                 startActivity(intent);

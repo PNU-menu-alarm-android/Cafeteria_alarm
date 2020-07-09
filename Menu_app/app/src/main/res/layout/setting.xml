@@ -5,11 +5,6 @@
     android:orientation="vertical"
     android:background="#ffe380"
     >
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/menulist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="6"
-            android:id="@+id/addmenu"
-            android:text="메뉴 추가"
+            android:id="@+id/Setting_account"
+            android:text="계정 설정"
             android:textSize="40sp"
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -44,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="6"
-            android:id="@+id/deletemenu"
-            android:text="메뉴 삭제"
+            android:id="@+id/Setting_menu"
+            android:text="메뉴 설정"
             android:paddingTop="20dp"
             android:textSize="40sp"
             android:minWidth="0dp"

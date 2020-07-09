@@ -24,6 +24,7 @@
         <activity android:name=".Setting"/>
         <activity android:name=".addMenu"/>
         <activity android:name=".deleteMenu"/>
+        <activity android:name=".Setting_menu"/>
     </application>
 
 </manifest>
