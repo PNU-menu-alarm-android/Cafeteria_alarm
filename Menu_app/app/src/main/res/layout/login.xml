@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ffe380">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -67,7 +68,8 @@
             android:textStyle="bold"
             android:textSize="20dp"
             android:layout_marginLeft="10dp"
-            android:padding="20dp"/>
+            android:padding="20dp"
+            android:background="#f3af04"/>
     </LinearLayout>
 
     <LinearLayout

@@ -4,29 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/menu_background"
-    android:adjustViewBounds="true"
-    android:scaleType="fitCenter"
-    android:weightSum="10" >
+    android:background="#ffe380"
+    android:weightSum="12">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:paddingTop="100dp"
-        android:paddingLeft="50dp"
-        android:layout_weight="8">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Menu"/>
-    </LinearLayout>
-
-    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#f3af04"
-        android:layout_weight="2">
+        android:layout_weight="10"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/home_icon">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu"
+                android:textSize="30sp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="#f3af04">
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_weight="1"
@@ -37,11 +41,10 @@
             android:maxWidth="100dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="10dp"
-            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
             android:layout_alignParentBottom="true"
             android:background="@null"
 
@@ -60,6 +63,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:paddingRight="10dp"
             android:background="@null"
 
@@ -75,13 +79,14 @@
             android:maxWidth="100dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@null"
+
+
             />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

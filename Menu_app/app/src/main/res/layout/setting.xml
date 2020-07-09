@@ -3,36 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/setting_background"
-    android:adjustViewBounds="true"
-    android:scaleType="fitCenter">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="setting"/>
+    android:background="#ffe380"
+    >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menulist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="home"
-        android:id="@+id/homebutton" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addmenu"
-        android:text="메뉴 추가"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/deletemenu"
-        android:text="메뉴 삭제"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/synchronization"
-        android:text="알람 동기화" />
+        android:layout_height="wrap_content"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="22"
+        android:orientation="vertical"
+        android:layout_margin="35dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:text="home"
+            android:textSize="40sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/btn2"
+            android:id="@+id/homebutton"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:id="@+id/addmenu"
+            android:text="메뉴 추가"
+            android:textSize="40sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/btn1"
+            android:paddingTop="25dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:id="@+id/deletemenu"
+            android:text="메뉴 삭제"
+            android:paddingTop="20dp"
+            android:textSize="40sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/btn3"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:id="@+id/synchronization"
+            android:text="알람 동기화"
+            android:textSize="40sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/btn4"
+            />
+    </LinearLayout>
 </LinearLayout>
