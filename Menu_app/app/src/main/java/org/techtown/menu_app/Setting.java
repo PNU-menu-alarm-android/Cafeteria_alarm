@@ -32,11 +32,13 @@ public class Setting extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Food> arrayList;
+    private ArrayList<Food> foodArrayList;
     private FirebaseDatabase firebaseDatabase, database;
     private DatabaseReference firebaseReference, reference, userReference;
     Button Home, add, delete, sync;
     String username, email, menu_name;
+
+    List<String> menus = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class Setting extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<>(); // food 객체를 담음
+        foodArrayList = new ArrayList<>(); // food 객체를 담음
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("user/"+username+"/Food");
@@ -65,11 +67,11 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                foodArrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
                     try {
                         Food food = snapshot.getValue(Food.class);
-                        arrayList.add(food);
+                        foodArrayList.add(food);
                     } catch(Exception e) {
                         continue;
                     }
@@ -84,7 +86,7 @@ public class Setting extends AppCompatActivity {
             }
         });
 
-        adapter = new CustomAdapter(arrayList, this);
+        adapter = new CustomAdapter(foodArrayList, this);
         recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
 
         Home.setOnClickListener(new View.OnClickListener() {
@@ -127,54 +129,34 @@ public class Setting extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
-                            try {
-                                Food food = snapshot.getValue(Food.class);
-                                menu_name = food.getName();
-                                List<String> places = Arrays.asList("금정회관교직원식당", "금정회관학생식당", "문창회관교직원식당", "문창회관학생식당",
-                                        "샛벌회관식당", "학생회관교직원식당", "학생회관학생식당");
-                                List<String> times = Arrays.asList("조식", "중식", "석식");
-                                database = FirebaseDatabase.getInstance();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추
+                            Food food = snapshot.getValue(Food.class);
+                            menu_name = food.getName();
+                            menus.add(menu_name);
+                        }
 
+                        for (final String food : menus) {
+                            List<String> whens = Arrays.asList("월", "화", "수", "목", "금", "토");
+                            List<String> places = Arrays.asList("금정회관교직원식당", "금정회관학생식당", "문창회관교직원식당", "문창회관학생식당",
+                                    "샛벌회관식당", "학생회관교직원식당", "학생회관학생식당");
+                            List<String> times = Arrays.asList("조식", "중식", "석식");
+                            database = FirebaseDatabase.getInstance();
+
+                            for (final String when : whens) {
                                 for (final String place : places) {
                                     for (final String time : times) {
-                                        reference = database.getReference("월/" + place + "/" + time);
+                                        reference = database.getReference(when + "/" + place + "/" + time);
                                         reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                for (DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name.equals(menu)){
-                                                        String alarm_cont = "월요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
+                                                    if (food.equals(menu)) {
+                                                        String alarm_cont = "'" + when + "요일 '" + place + "'에서 '" + time + "'으로 '"
+                                                                + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(menu_name, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates); //여기수정할것
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Log.e("sync", "alarm addition error");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                for (final String place : places) {
-                                    for (final String time : times) {
-                                        reference = database.getReference("화/" + place + "/" + time);
-                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
-                                                    String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name.equals(menu)){
-                                                        String alarm_cont = "화요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
-                                                        Alarm update_alarm = new Alarm(alarm_cont);
-                                                        Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(menu_name, update_alarm);
+                                                        alarm_updates.put(when + place + time + menu, update_alarm);
                                                         userReference.child(username).child("alarm").updateChildren(alarm_updates);
                                                     }
                                                 }
@@ -187,115 +169,6 @@ public class Setting extends AppCompatActivity {
                                         });
                                     }
                                 }
-
-                                for (final String place : places) {
-                                    for (final String time : times) {
-                                        reference = database.getReference("수/" + place + "/" + time);
-                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
-                                                    String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name.equals(menu)){
-                                                        String alarm_cont = "수요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
-                                                        Alarm update_alarm = new Alarm(alarm_cont);
-                                                        Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(menu_name, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Log.e("sync", "alarm addition error");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                for (final String place : places) {
-                                    for (final String time : times) {
-                                        reference = database.getReference("목/" + place + "/" + time);
-                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
-                                                    String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name.equals(menu)){
-                                                        String alarm_cont = "목요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
-                                                        Alarm update_alarm = new Alarm(alarm_cont);
-                                                        Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(menu_name, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Log.e("sync", "alarm addition error");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                for (final String place : places) {
-                                    for (final String time : times) {
-                                        reference = database.getReference("금/" + place + "/" + time);
-                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
-                                                    String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name.equals(menu)){
-                                                        String alarm_cont = "금요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
-                                                        Alarm update_alarm = new Alarm(alarm_cont);
-                                                        Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(menu_name, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Log.e("sync", "alarm addition error");
-                                            }
-                                        });
-                                    }
-                                }
-
-                                for (final String place : places) {
-                                    for (final String time : times) {
-                                        reference = database.getReference("토/" + place + "/" + time);
-                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for(DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
-                                                    String menu = (String) in_snapshot.getValue();
-                                                    if(menu_name.equals(menu)){
-                                                        String alarm_cont = "토요일 '" + place + "'에서 '" + time + "'으로 '" + menu + "'이/가 나옵니다.";
-                                                        Alarm update_alarm = new Alarm(alarm_cont);
-                                                        Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(menu_name, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Log.e("sync", "alarm addition error");
-                                            }
-                                        });
-                                    }
-                                }
-
-                            } catch(Exception e) {
-                                Log.e("sync", "Syncronizing error");
-                                Toast.makeText(Setting.this, "동기화 에러 발견", Toast.LENGTH_SHORT).show();
-                                continue;
                             }
                         }
                     }
@@ -323,12 +196,12 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                foodArrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
                     Log.d("Setting", "ok");
                     try {
                         Food food = snapshot.getValue(Food.class);
-                        arrayList.add(food);
+                        foodArrayList.add(food);
                     } catch(Exception e) {
                         continue;
                     }
@@ -343,7 +216,7 @@ public class Setting extends AppCompatActivity {
             }
         });
 
-        adapter = new CustomAdapter(arrayList, this);
+        adapter = new CustomAdapter(foodArrayList, this);
         recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
     }
 }
