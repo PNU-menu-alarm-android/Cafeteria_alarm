@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Menu extends AppCompatActivity {
 
-    ImageButton Home;
+    Button Home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

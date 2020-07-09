@@ -55,7 +55,7 @@ public class home extends AppCompatActivity {
 
         foodRecyclerView = findViewById(R.id.menulist);
         foodRecyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         foodRecyclerView.setLayoutManager(layoutManager);
         foodArrayList = new ArrayList<Food>(); // food 객체를 담음
 
