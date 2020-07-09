@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".Sign_up" />
         <activity android:name=".home" />
-        <activity android:name=".Menu" />
+        <activity android:name=".AllMenu" />
         <activity android:name=".Setting"/>
         <activity android:name=".addMenu"/>
         <activity android:name=".deleteMenu"/>

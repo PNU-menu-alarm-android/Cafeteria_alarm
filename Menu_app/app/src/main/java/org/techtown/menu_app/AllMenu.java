@@ -1,6 +1,5 @@
 package org.techtown.menu_app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Menu extends AppCompatActivity {
-
-    ImageButton Home;
+public class AllMenu extends AppCompatActivity {
+    Button Home;
     private RecyclerView menuRecyclerView;
     private RecyclerView.Adapter menuAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -47,7 +46,7 @@ public class Menu extends AppCompatActivity {
 
     private Button search;
 
-    private String selected_group;
+    private String selected_week, selected_place, selected_time, selected_group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +59,7 @@ public class Menu extends AppCompatActivity {
         menuRecyclerView.setLayoutManager(layoutManager);
         menuArrayList = new ArrayList<Food>(); // food 객체를 담음
 
-
         search = findViewById(R.id.search);
-
-        selected_group = "";
 
         week_list = new ArrayList<>();
         week_list.add("월");
@@ -72,21 +68,22 @@ public class Menu extends AppCompatActivity {
         week_list.add("목");
         week_list.add("금");
         week_list.add("토");
-/*
-        weekAdapter = new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                week_list);
+
+        weekAdapter = new ArrayAdapter(this,
+                R.layout.support_simple_spinner_dropdown_item, week_list);
 
         week_sp = (Spinner)findViewById(R.id.week);
         week_sp.setAdapter(weekAdapter);
-        week_sp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        week_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selected_group += week_list.get(position);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selected_week = week_list.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        selected_group += "/";
 
         place_list = new ArrayList<>();
         place_list.add("금정회관교직원식당");
@@ -97,31 +94,36 @@ public class Menu extends AppCompatActivity {
         place_list.add("학생회관교직원식당");
         place_list.add("학생회관학생식당");
 
-
-        placeAdapter = new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                place_list);
+        placeAdapter = new ArrayAdapter(this,
+                R.layout.support_simple_spinner_dropdown_item, place_list);
 
         place_sp = (Spinner)findViewById(R.id.place);
         place_sp.setAdapter(placeAdapter);
-        place_sp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        place_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selected_group += place_list.get(position);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selected_place = place_list.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-        selected_group += "/";
-
         time = findViewById(R.id.time);
-        time_id = time.getCheckedRadioButtonId();
-        time_bt = (RadioButton)findViewById(time_id);
-
-        selected_group += time_bt.getText().toString().trim();
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                time_id = time.getCheckedRadioButtonId();
+                time_bt = (RadioButton)findViewById(time_id);
+                
+                selected_time = time_bt.getText().toString().trim();
+
+                selected_group = selected_week + "/" + selected_place +
+                        "/" + selected_time;
+                Toast.makeText(AllMenu.this, selected_group, Toast.LENGTH_SHORT).show();
+
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 menuReference = firebaseDatabase.getReference(selected_group);
                 menuReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -154,7 +156,7 @@ public class Menu extends AppCompatActivity {
         });
 
         menuAdapter = new CustomAdapter(menuArrayList, this);
-        menuRecyclerView.setAdapter(menuAdapter); // 리사이클러뷰에 어댑터 연결*/
+        menuRecyclerView.setAdapter(menuAdapter); // 리사이클러뷰에 어댑터 연결
 
         Home = findViewById(R.id.homebutton);
 
