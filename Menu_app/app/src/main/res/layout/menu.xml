@@ -17,12 +17,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/home_icon">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/menulist"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Menu"
-                android:textSize="30sp"
-                android:layout_gravity="center"/>
+                android:orientation="vertical"/>
+
         </FrameLayout>
     </LinearLayout>
 
