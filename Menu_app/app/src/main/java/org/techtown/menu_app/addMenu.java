@@ -68,7 +68,6 @@ public class addMenu extends AppCompatActivity {
                     Toast.makeText(addMenu.this, menu_name+" 추가 완료", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                //((Setting)Setting.CONTEXT).onResume();
                 finish();
             }
         });

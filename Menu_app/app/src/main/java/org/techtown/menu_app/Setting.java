@@ -63,7 +63,7 @@ public class Setting extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseReference = firebaseDatabase.getReference("user/"+username+"/Food");
-        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        /*firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
@@ -87,7 +87,7 @@ public class Setting extends AppCompatActivity {
         });
 
         adapter = new CustomAdapter(foodArrayList, this);
-        recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
+        recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결*/
 
         Home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +152,7 @@ public class Setting extends AppCompatActivity {
                                                 for (DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
                                                     String menu = (String) in_snapshot.getValue();
                                                     if (food.equals(menu)) {
-                                                        String alarm_cont = "'" + when + "요일 '" + place + "'에서 '" + time + "'으로 '"
+                                                        String alarm_cont = when + "요일 '" + place + "'에서 '" + time + "'으로 '"
                                                                 + menu + "'이/가 나옵니다.";
                                                         Alarm update_alarm = new Alarm(alarm_cont);
                                                         Map<String, Object> alarm_updates = new Hashtable<>();
@@ -184,7 +184,7 @@ public class Setting extends AppCompatActivity {
             }
         });
     }
-
+/*
     @Override
     public void onResume()
     {
@@ -218,5 +218,5 @@ public class Setting extends AppCompatActivity {
 
         adapter = new CustomAdapter(foodArrayList, this);
         recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
-    }
+    }*/
 }

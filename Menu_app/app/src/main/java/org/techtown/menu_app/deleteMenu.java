@@ -67,7 +67,6 @@ public class deleteMenu extends AppCompatActivity {
                     Toast.makeText(deleteMenu.this, menu_name + " 제거 완료", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                ((Setting)Setting.CONTEXT).onResume();
                 finish();
             }
         });

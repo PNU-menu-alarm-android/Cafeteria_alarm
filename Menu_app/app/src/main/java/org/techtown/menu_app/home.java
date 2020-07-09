@@ -1,12 +1,10 @@
 package org.techtown.menu_app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,12 +28,14 @@ public class home extends AppCompatActivity {
     ImageButton Setting, Menu;
     String username, email;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView foodRecyclerView, alarmRecyclerView;
+    private RecyclerView.Adapter alarmAdapter;
+    private RecyclerView.Adapter foodAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Alarm> arrayList;
+    private ArrayList<Alarm> alarmArrayList;
+    private ArrayList<Food> foodArrayList;
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference firebaseReference;
+    private DatabaseReference foodReference, alarmReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,31 +51,30 @@ public class home extends AppCompatActivity {
 
         Setting = findViewById(R.id.settingbutton);
         Menu = findViewById(R.id.allmenubutton);
-
         HCONTEXT = this;
 
-        recyclerView = findViewById(R.id.alarmlist);
-        recyclerView.setHasFixedSize(true);
+        foodRecyclerView = findViewById(R.id.menulist);
+        foodRecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<>(); // food 객체를 담음
+        foodRecyclerView.setLayoutManager(layoutManager);
+        foodArrayList = new ArrayList<Food>(); // food 객체를 담음
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseReference = firebaseDatabase.getReference("user/"+username+"/alarm");
-        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        foodReference = firebaseDatabase.getReference("user/"+username+"/Food");
+        foodReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                foodArrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
                     try {
-                        Alarm alarm = snapshot.getValue(Alarm.class);
-                        arrayList.add(alarm);
+                        Food food = snapshot.getValue(Food.class);
+                        foodArrayList.add(food);
                     } catch(Exception e) {
                         continue;
                     }
                 }
-                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+                foodAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
             }
 
             @Override
@@ -85,8 +84,42 @@ public class home extends AppCompatActivity {
             }
         });
 
-        adapter = new AlarmAdapter(arrayList, this);
-        recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
+        foodAdapter = new CustomAdapter(foodArrayList, this);
+        foodRecyclerView.setAdapter(foodAdapter); // 리사이클러뷰에 어댑터 연결
+
+        // 알람 리사이클러뷰
+        alarmRecyclerView = findViewById(R.id.alarmlist);
+        alarmRecyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        alarmRecyclerView.setLayoutManager(layoutManager);
+        alarmArrayList = new ArrayList<>(); // food 객체를 담음
+
+        alarmReference = firebaseDatabase.getReference("user/"+username+"/alarm");
+        alarmReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
+                alarmArrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
+                    try {
+                        Alarm alarm = snapshot.getValue(Alarm.class);
+                        alarmArrayList.add(alarm);
+                    } catch(Exception e) {
+                        continue;
+                    }
+                }
+                alarmAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 디비를 가져오던 중 에러 발생 시
+                Log.e("Setting", String.valueOf(databaseError.toException()));
+            }
+        });
+
+        alarmAdapter = new AlarmAdapter(alarmArrayList, this);
+        alarmRecyclerView.setAdapter(alarmAdapter); // 리사이클러뷰에 어댑터 연결
 
         Setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,26 +143,24 @@ public class home extends AppCompatActivity {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseReference = firebaseDatabase.getReference("user/"+username+"/alarm");
-        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        alarmReference = firebaseDatabase.getReference("user/" + username + "/alarm");
+        alarmReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                alarmArrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
                     try {
                         Alarm alarm = snapshot.getValue(Alarm.class);
-                        arrayList.add(alarm);
-                    } catch(Exception e) {
+                        alarmArrayList.add(alarm);
+                    } catch (Exception e) {
                         continue;
                     }
                 }
-                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+                alarmAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
             }
 
             @Override
@@ -139,7 +170,35 @@ public class home extends AppCompatActivity {
             }
         });
 
-        adapter = new AlarmAdapter(arrayList, this);
-        recyclerView.setAdapter(adapter); // 리사이클러뷰에 어댑터 연결
+        alarmAdapter = new AlarmAdapter(alarmArrayList, this);
+        alarmRecyclerView.setAdapter(alarmAdapter); // 리사이클러뷰에 어댑터 연결
+
+        foodReference = firebaseDatabase.getReference("user/" + username + "/Food");
+        foodReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
+                foodArrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 반복문으로 데이터 list를 추출
+                    Log.d("Setting", "ok");
+                    try {
+                        Food food = snapshot.getValue(Food.class);
+                        foodArrayList.add(food);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+                foodAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 디비를 가져오던 중 에러 발생 시
+                Log.e("Setting", String.valueOf(databaseError.toException()));
+            }
+        });
+
+        foodAdapter = new CustomAdapter(foodArrayList, this);
+        foodRecyclerView.setAdapter(foodAdapter); // 리사이클러뷰에 어댑터 연결
     }
 }
