@@ -1,23 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add Menu" />
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="name"
-        android:id="@+id/name"
-        android:maxLines="1"
-        android:privateImeOptions="defaultInputmode=korean" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/add"
-        android:text="add" />
+    android:orientation="vertical"
+    android:background="#ffe380"
+    android:gravity="center"
+    android:layout_gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메뉴 추가"
+            android:textStyle="bold"
+            android:textSize="40dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가하고싶은 메뉴를 입력하여 추가하세요"
+            android:textStyle="italic"
+            android:textSize="20dp"
+            android:textColor="@android:color/holo_orange_light"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:hint="name"
+            android:id="@+id/name"
+            android:maxLines="1"
+            android:privateImeOptions="defaultInputmode=korean" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add"
+            android:text="add"
+            android:background="#f3af04"/>
 
-</LinearLayout>
+    </LinearLayout>

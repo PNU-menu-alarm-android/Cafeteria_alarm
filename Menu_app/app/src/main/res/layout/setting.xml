@@ -10,9 +10,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="22"
+        android:weightSum="24"
         android:orientation="vertical"
-        android:layout_margin="35dp">
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -26,19 +32,7 @@
             android:background="@drawable/btn2"
             android:id="@+id/homebutton"
             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="6"
-            android:id="@+id/Setting_account"
-            android:text="계정 설정"
-            android:textStyle="bold"
-            android:textSize="30sp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:background="@drawable/btn1"
-            android:paddingTop="25dp"
-            />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -64,5 +58,10 @@
             android:minHeight="0dp"
             android:background="@drawable/btn4"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"/>
+
     </LinearLayout>
 </LinearLayout>

@@ -11,77 +11,120 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/home_icon"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:weightSum="14"
+            >
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="요일 선택"
-                android:textSize="30dp"/>
-
-            <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/week" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="식당 선택"
-                android:textSize="30dp"/>
-
-            <Spinner
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                />
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/place" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="요일 선택"
+                    android:textColor="@android:color/holo_orange_light"
+                    android:textSize="17dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="조.중.석식 선택"
-                android:textSize="30dp"/>
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/time"
-                android:orientation="horizontal">
-                <RadioButton
-                    android:layout_width="0dp"
+                <Spinner
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="조식"
-                    android:layout_weight="1"
-                    android:id="@+id/breakfast"/>
-                <RadioButton
-                    android:layout_width="0dp"
+                    android:id="@+id/week" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="중식"
-                    android:layout_weight="1"
-                    android:id="@+id/lunch"/>
-                <RadioButton
-                    android:layout_width="0dp"
+                    android:text="식당 선택"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/holo_orange_light"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="석식"
-                    android:layout_weight="1"
-                    android:id="@+id/dinner"/>
-            </RadioGroup>
+                    android:id="@+id/place" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="조.중.석식 선택"
+                    android:textSize="17dp"
+                    android:textColor="@android:color/holo_orange_light"
+                   />
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/time"
+                    android:orientation="horizontal"
+                    >
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="조식"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:id="@+id/breakfast"/>
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="중식"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:id="@+id/lunch"/>
+                    <RadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="석식"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:id="@+id/dinner"/>
+                </RadioGroup>
+            </LinearLayout>
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:text="메뉴 검색"
-                android:id="@+id/search" />
+                android:textStyle="bold"
+                android:background="#f3af04"
+                android:id="@+id/search"
+                android:layout_gravity="center"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/menulist"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:padding="20dp"/>
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"/>
-
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                />
         </LinearLayout>
     </LinearLayout>
 
