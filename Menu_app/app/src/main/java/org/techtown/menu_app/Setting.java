@@ -1,5 +1,8 @@
 package org.techtown.menu_app;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +35,13 @@ public class Setting extends AppCompatActivity {
     public static Context CONTEXT;
 
     private FirebaseDatabase firebaseDatabase, database;
-    private DatabaseReference firebaseReference, reference, userReference;
-    Button Home, Setting_account, Setting_menu, sync;
+    private DatabaseReference firebaseReference, reference, userReference, alarmReference;
+    private Calendar cal, alarmCal;
+    public AlarmManager am;
+    Button Home, Setting_menu, sync;
     String username, email, menu_name;
+
+    int nowDay, alarmDay;
 
     List<String> menus = new ArrayList<String>();
 
@@ -48,7 +57,6 @@ public class Setting extends AppCompatActivity {
         email = intent.getStringExtra("email").trim();
 
         Home = findViewById(R.id.homebutton);
-        Setting_account = findViewById(R.id.Setting_account);
         Setting_menu = findViewById(R.id.Setting_menu);
         sync = findViewById(R.id.synchronization);
 
@@ -59,19 +67,6 @@ public class Setting extends AppCompatActivity {
                 finish();
             }
         });
-
-/*
-        Setting_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Setting.this, addMenu.class);
-                intent.putExtra("username", username);
-                intent.putExtra("email", email);
-                startActivity(intent);
-            }
-        });
-
- */
 
         Setting_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +81,10 @@ public class Setting extends AppCompatActivity {
         sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                cal = Calendar.getInstance();
+                nowDay = cal.get(Calendar.DAY_OF_WEEK);
+
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 userReference = firebaseDatabase.getReference("user");
                 userReference.child(username).child("alarm").setValue(null);
@@ -101,37 +100,57 @@ public class Setting extends AppCompatActivity {
                         }
 
                         for (final String food : menus) {
-                            List<String> whens = Arrays.asList("월", "화", "수", "목", "금", "토");
+                            final List<String> whens = Arrays.asList("일", "월", "화", "수", "목", "금", "토");
+                            List<Integer> week = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
                             List<String> places = Arrays.asList("금정회관교직원식당", "금정회관학생식당", "문창회관교직원식당", "문창회관학생식당",
                                     "샛벌회관식당", "학생회관교직원식당", "학생회관학생식당");
                             List<String> times = Arrays.asList("조식", "중식", "석식");
                             database = FirebaseDatabase.getInstance();
 
-                            for (final String when : whens) {
-                                for (final String place : places) {
-                                    for (final String time : times) {
-                                        reference = database.getReference(when + "/" + place + "/" + time);
-                                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
-                                                for (DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
-                                                    String menu = (String) in_snapshot.getValue();
-                                                    if (food.equals(menu)) {
-                                                        String alarm_cont = when + "요일 '" + place + "'에서 '" + time + "'으로 '"
-                                                                + menu + "'이/가 나옵니다.";
-                                                        Alarm update_alarm = new Alarm(alarm_cont);
-                                                        Map<String, Object> alarm_updates = new Hashtable<>();
-                                                        alarm_updates.put(when + place + time + menu, update_alarm);
-                                                        userReference.child(username).child("alarm").updateChildren(alarm_updates);
+                            for (final Integer day : week) {
+                                if(day >= nowDay) {
+                                    for (final String place : places) {
+                                        for (final String time : times) {
+                                            reference = database.getReference(whens.get(day - 1) + "/" + place + "/" + time);
+                                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot in_dataSnapshot) {
+                                                    for (DataSnapshot in_snapshot : in_dataSnapshot.getChildren()) {
+                                                        String menu = (String) in_snapshot.getValue();
+                                                        if (food.equals(menu)) {
+                                                            String alarm_cont = whens.get(day - 1) + "요일 '" + place + "'에서 '" + time + "'으로 '"
+                                                                    + menu + "'이/가 나옵니다.";
+
+                                                            // DB 등록
+                                                            Alarm update_alarm = new Alarm(alarm_cont);
+                                                            Map<String, Object> alarm_updates = new Hashtable<>();
+                                                            alarm_updates.put(whens.get(day - 1) + place + time + menu, update_alarm);
+                                                            userReference.child(username).child("alarm").updateChildren(alarm_updates);
+
+
+                                                            // 알람 설정
+                                                            alarmCal = Calendar.getInstance();
+                                                            alarmCal.set(Calendar.DAY_OF_WEEK, day);
+                                                            alarmCal.set(Calendar.DATE, cal.get(Calendar.DATE) + (day - nowDay));
+                                                            alarmCal.set(Calendar.HOUR, 13);
+                                                            alarmCal.set(Calendar.MINUTE, 10);
+                                                            alarmCal.set(Calendar.SECOND, 0);
+
+                                                            Intent alarmIntent = new Intent(Setting.this, AlarmReceiver.class);
+                                                            alarmIntent.putExtra("알람내용", alarm_cont);
+                                                            PendingIntent sender = PendingIntent.getBroadcast(Setting.this,
+                                                                    0, alarmIntent,0);
+                                                            am.set(AlarmManager.RTC, alarmCal.getTimeInMillis(), sender);
+                                                        }
                                                     }
                                                 }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Log.e("sync", "alarm addition error");
-                                            }
-                                        });
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                    Log.e("sync", "alarm addition error");
+                                                }
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -144,6 +163,7 @@ public class Setting extends AppCompatActivity {
                         Log.e("Setting", String.valueOf(databaseError.toException()));
                     }
                 });
+
                 Toast.makeText(Setting.this, "알람 동기화를 완료하였습니다.", Toast.LENGTH_SHORT).show();
                 ((home)home.HCONTEXT).onResume();
             }

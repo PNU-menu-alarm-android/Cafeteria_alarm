@@ -117,12 +117,11 @@ public class AllMenu extends AppCompatActivity {
             public void onClick(View v) {
                 time_id = time.getCheckedRadioButtonId();
                 time_bt = (RadioButton)findViewById(time_id);
-                
+
                 selected_time = time_bt.getText().toString().trim();
 
                 selected_group = selected_week + "/" + selected_place +
                         "/" + selected_time;
-                Toast.makeText(AllMenu.this, selected_group, Toast.LENGTH_SHORT).show();
 
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 menuReference = firebaseDatabase.getReference(selected_group);
