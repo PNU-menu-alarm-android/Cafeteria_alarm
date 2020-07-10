@@ -60,6 +60,8 @@ public class Setting extends AppCompatActivity {
         Setting_menu = findViewById(R.id.Setting_menu);
         sync = findViewById(R.id.synchronization);
 
+        am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
         Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +83,6 @@ public class Setting extends AppCompatActivity {
         sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                 cal = Calendar.getInstance();
                 nowDay = cal.get(Calendar.DAY_OF_WEEK);
 
@@ -108,7 +109,7 @@ public class Setting extends AppCompatActivity {
                             database = FirebaseDatabase.getInstance();
 
                             for (final Integer day : week) {
-                                if(day >= nowDay) {
+                                if (day >= nowDay) { //(day > nowDay || ((day == nowDay) && cal.get(Calendar.HOUR_OF_DAY) <= 6)) { 원래는 동기화 시간에 따라 알람 등록
                                     for (final String place : places) {
                                         for (final String time : times) {
                                             reference = database.getReference(whens.get(day - 1) + "/" + place + "/" + time);
@@ -130,14 +131,13 @@ public class Setting extends AppCompatActivity {
 
                                                             // 알람 설정
                                                             alarmCal = Calendar.getInstance();
-                                                            alarmCal.set(Calendar.DAY_OF_WEEK, day);
                                                             alarmCal.set(Calendar.DATE, cal.get(Calendar.DATE) + (day - nowDay));
-                                                            alarmCal.set(Calendar.HOUR, 13);
-                                                            alarmCal.set(Calendar.MINUTE, 10);
-                                                            alarmCal.set(Calendar.SECOND, 0);
+                                                            alarmCal.set(Calendar.HOUR_OF_DAY, 13);
+                                                            alarmCal.set(Calendar.MINUTE, 59);
+                                                            alarmCal.set(Calendar.SECOND, 00);
 
                                                             Intent alarmIntent = new Intent(Setting.this, AlarmReceiver.class);
-                                                            alarmIntent.putExtra("알람내용", alarm_cont);
+                                                            alarmIntent.putExtra("tag", alarm_cont);
                                                             PendingIntent sender = PendingIntent.getBroadcast(Setting.this,
                                                                     0, alarmIntent,0);
                                                             am.set(AlarmManager.RTC, alarmCal.getTimeInMillis(), sender);
