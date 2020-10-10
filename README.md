@@ -1,1 +1,1 @@
-# PNU_Project [Cafeteria_alarm]
+# PNU Cafeteria alarm
